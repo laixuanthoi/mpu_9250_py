@@ -393,16 +393,17 @@ class MPU9250:
 		magvals = np.zeros((numSamples,3))
 		sample = 0
 		prev_data = [0,0,0]
-		int_data = data.astype(int)
+		
 		while sample < numSamples:
 			self.readSensor()
 			data = self.MagVals/self.Mags + self.MagBias
-			if prev_data[0] != int_data[0] and prev_data[1] != int_data[1] and prev_data[2] != int_data[2]:
+			int_data = data.astype(int)
+			if prev_data[0] != int_data[0] or prev_data[1] != int_data[1] or prev_data[2] != int_data[2]:
 				magvals[sample] = data
 				prev_data = int_data
 				print("Collecting {0}/{1} sample".format(sample, numSamples))
 				sample += 1
-			time.sleep(0.05)
+			time.sleep(0.01)
 
 		# for sample in range(1,numSamples):
 		# 	print(magvals[sample], sample)
